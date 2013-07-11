@@ -1,3 +1,6 @@
+// check storage (even ram) through the snmp protocol (just verison 1 till now)
+// and give back to nagios vaule as %
+
 package main
 
 import (
