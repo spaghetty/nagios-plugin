@@ -1,0 +1,19 @@
+#initial support to build go lang projects
+
+$(GO_DEPS):
+	export GOPATH=$(realpath $(top_srcdir)) ; $(GOLANG) get $@
+
+$(GO_EXECS): $(GO_DEPS)
+	export GOPATH=$(realpath $(top_srcdir)) ; $(GOLANG) build -o $@ $(top_srcdir)/$($@_GOSRC)
+
+install: ${GO_EXECS}
+	test -z @SIPX_BINDIR@ || $(mkdir_p) $(DESTDIR)@SIPX_BINDIR@
+	for prog in $(GO_EXECS); do \
+	 $(INSTALL) -m 755 $$prog $(DESTDIR)@SIPX_BINDIR@/; \
+	done
+
+CLEANFILES = ${GO_EXECS}
+
+.PHONY: $(GO_EXECS)
+
+bin_SCRIPTS = $(GO_EXECS)
